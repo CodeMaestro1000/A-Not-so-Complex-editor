@@ -1,0 +1,60 @@
+							Project Text Editor Documentation.
+This documentation involves the various procedures taking for building the text editor GUI called "TXTeditor" :).
+The documentation can be seen as a roadmap for any python programmer who is venturing into making GUIs for their various python applications.
+The editor was built using tkinter which is the python interface to the tk GUI library. The following iterations involves the process of building the editor.
+
+I. A frame was created to house all the components of the text editor. The class "Editor" was created as a Frame and that is why it had to be packed when the root
+   object was created.
+
+II. Next, the various widgets and variables that were going to be used throughout the "Editor" class were initialised in the __init__() method. Also, various bindings 
+    were defined in the __init__() method to ensure that they were automatically instanstiated as soon as a class object was created.
+    
+III. Notice that lines 35-37 were used to configure the icon on the window, the name on the window and the size of the wiindow.
+     Also, notice that an object of  an imported class  was used (line 38). This class ("CustomText" stored in test.py) was used to create a text widget that automatically 
+     intercepts any change made in it. The class was created by Brian Oakley and can be found on stackoverflow.com
+     Also, a canvas widget class was also created to handle the display of line numbers(Line 46).
+
+IV.  Next, the menu bar was created in the menu_bar() method. Nootice that variables "photo... = None" were initialised before the class, this was done to ensure that
+     the images on the various buttons on the menu bar remain there after the program has been run.
+
+V. Next, the toolbar was created and also the images on the buttons were created to ensure that they remain after root.mainloop() has been executed. You may have noticed
+   that a CreateToolTip module was imported. This was a customised tooltip that is used to show some information about the icons on the toolbar. (The class is stored 
+   in image.py).
+
+VI. Lastly, for the framework, a status bar was created (in the __init__() method). After the framework was created, some instructions were needed to make the text
+    editor to function.
+
+VII. First, the options in the menu bar needed to be bound to be functions. As such, functions such as open_command(), save_command(), save_as_command() were created
+   (amongst a whole lot of others to give a fully functional menu bar).
+
+VIII. The bindings that were instantiated in the __init__() method needed callbacks and as such they were created. You can look up bindings in the tk reference for
+      more information on event bindings in tkinter. Note that some of the bindings in tkinter text widget come(e.g ctrl+V shortcut) by default while others don't.
+
+IX. Next, the mechanism for updating the line numbers was created (in the TextLineNumbers class in test.py). This mechanism was placed in the redraw() method of that
+    class. The method uses the dlineinfo() method of tkinter's text widget to get the line that the cursor currently is in (for more info see the text widget documentation).
+    A problem arises after the redraw() method had been created, when is this method to be called? It could be bound to tkinters "<Any-KeyPress>" event but then, a key
+    would have to be pressed for the line number bar to be updated. This is a solution but not effective in the sense that copy and paste operations could be carried
+    out and then the current line number would be inaccurate. 
+    The solution was to then make the text widget to automatically  detect any changes made in it and update the line numbers respectively (a big thank you to Brian
+    Oakley for that!!) and as such the CustomText class was created for this self updating text widget.
+
+X. Next, a mechanism for knowing the position of the cursor (and possibly the number of characters) was created for use in the status bar. This was relatively easy
+   as the .index() method of the text widget returns the current position of the curosr (row and column) as "row.column" and hence using loops, the current cursor 
+   position could be easily updated. The update_cursor_info() method takes care of this.
+
+XI. Next, a find text feature was added to the editor. This is do-able because of the indexing and tagging ability of tkinter's text widget. For more info, see
+    indexing and tagging in the tkinters documentation. With the tagging feature, a highlight line option was also added to highlight the current line that a user is in.
+
+XII. A context menu was also created that was bound to the right mouse button. (the Pop-up menu section of the menu bar creates the menu and the do_pop_up() method
+     handles the callback to the binding).
+
+XIII. Additional methods to handle when the editor is about to be closed without changes being saved or without the user's work being saved at all were created
+      (exit_command() and save_changes()).
+
+XIV. After all was said and done, the root was created and the frame housing the text editor was displayed using the pack geometry manger.
+
+
+Additional features like adding several font and theme options can also be added, along with a replace option (for find). and the editor can also be further developed into a compiler. Also, to create an
+executable file for your GUIs, take a look at pyinstaller.
+
+CHEERS.
